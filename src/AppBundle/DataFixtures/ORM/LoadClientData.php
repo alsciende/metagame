@@ -22,6 +22,7 @@ class LoadClientData extends AbstractFixture implements OrderedFixtureInterface
         $client->setAllowedGrantTypes(array('authorization_code', 'refresh_tokens'));
         $client->setName("Test Client");
         $client->setEmail("test-client@oauth.net");
+        $client->setRandomId('test');
 
         $manager->persist($client);
         $manager->flush();

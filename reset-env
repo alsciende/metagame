@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+export SYMFONY_ENV=$1
+bin/console cache:clear
+bin/console doctrine:database:drop --force
+bin/console doctrine:database:create
+bin/console doctrine:schema:update --force
+if [[ $1 != "prod" ]]; then
+  bin/console doctrine:fixtures:load --append
+fi
