@@ -2,7 +2,7 @@
 
 namespace AppBundle\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -26,14 +26,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $em;
+    /** @var UserManagerInterface */
+    private $userManager;
     private $router;
     private $passwordEncoder;
     private $csrfTokenManager;
 
-    public function __construct(EntityManagerInterface $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(
+        UserManagerInterface $userManager,
+        RouterInterface $router,
+        UserPasswordEncoder $passwordEncoder,
+        CsrfTokenManagerInterface $csrfTokenManager
+    )
     {
-        $this->em = $em;
+        $this->userManager = $userManager;
         $this->router = $router;
         $this->passwordEncoder = $passwordEncoder;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -41,21 +47,23 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-        $isLoginSubmit = $request->getPathInfo() == '/login_check' && $request->isMethod('POST');
-        if (!$isLoginSubmit) {
-            // skip authentication
-            return;
+        if ($request->getPathInfo() !== '/login_check') {
+            return null;
         }
+
         $username = $request->request->get('_username');
         $password = $request->request->get('_password');
         $csrfToken = $request->request->get('_csrf_token');
+
         if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
             throw new InvalidCsrfTokenException('Invalid CSRF token.');
         }
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $username
         );
+
         return [
             'username' => $username,
             'password' => $password,
@@ -64,29 +72,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $username = $credentials['username'];
-        return $this->em->getRepository('AppBundle:User')
-            ->findOneBy(['username' => $username]);
+        return $this->userManager->findUserByUsername($credentials['username']);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $password = $credentials['password'];
-        if ($this->passwordEncoder->isPasswordValid($user, $password)) {
-            return true;
-        }
-        return false;
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = null;
-        // if the user hit a secure page and start() was called, this was
-        // the URL they were on, and probably where you want to redirect to
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
-        if (!$targetPath) {
+        if ($targetPath === null) {
             $targetPath = $this->router->generate('homepage');
         }
+
         return new RedirectResponse($targetPath);
     }
 

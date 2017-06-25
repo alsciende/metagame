@@ -22,18 +22,6 @@ class DefaultController extends Controller
      */
     public function indexAction ()
     {
-        return new Response("<h1>Metagame.cards</h1>");
+        return $this->render('::base.html.twig');
     }
-
-    /**
-     * @Route("/profile")
-     * @Security("has_role('ROLE_USER')")
-     *
-     */
-    public function profileAction ()
-    {
-        $user = $this->getUser();
-        return new Response("<h1>Profile of " . $user->getUsername() . "</h1>");
-    }
-
 }

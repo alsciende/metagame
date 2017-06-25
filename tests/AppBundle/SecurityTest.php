@@ -36,10 +36,10 @@ class SecurityTest extends WebTestCase
         );
     }
 
-    public function testSecurity()
+    public function testGetProfileDenied()
     {
         $client = $this->getAnonymousClient();
-        $client->request('GET', "/profile");
+        $client->request('GET', "/profile/show");
         $this->assertEquals(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode()
@@ -50,13 +50,46 @@ class SecurityTest extends WebTestCase
         );
     }
 
-    public function testBasicLogin()
+    public function testGetProfile()
     {
         $client = $this->getAuthenticatedClient();
-        $client->request('GET', '/profile');
+        $client->request('GET', '/profile/show');
         $this->assertEquals(
             Response::HTTP_OK,
             $client->getResponse()->getStatusCode()
+        );
+    }
+
+    public function testGetChangePassword()
+    {
+        $client = $this->getAuthenticatedClient();
+        $client->request('GET', '/change_password');
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+    }
+
+    public function testGetRegister()
+    {
+        $client = $this->getAnonymousClient();
+        $client->request('GET', '/registration/register');
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+    }
+
+    public function testLogout()
+    {
+        $client = $this->getAuthenticatedClient();
+        $client->request('GET', '/logout');
+        $this->assertEquals(
+            Response::HTTP_FOUND,
+            $client->getResponse()->getStatusCode()
+        );
+        $this->assertNotNull(
+            $client->getResponse()->headers->get('location')
         );
     }
 
@@ -65,7 +98,7 @@ class SecurityTest extends WebTestCase
         $client = $this->getAuthenticatedClient();
         $crawler = $client->request(
             'GET',
-            "/oauth/v2/auth",
+            '/oauth/v2/auth',
             [
                 'client_id' => '1_test',
                 'response_type' => 'code',
@@ -87,6 +120,88 @@ class SecurityTest extends WebTestCase
         $this->assertEquals(
             0,
             strpos($client->getResponse()->headers->get('location'), 'http://httpbin.org/get')
+        );
+    }
+
+    public function testGetUsersDenied()
+    {
+        $client = $this->getAuthenticatedClient();
+        $client->request('GET', '/users');
+        $this->assertEquals(
+            Response::HTTP_FORBIDDEN,
+            $client->getResponse()->getStatusCode()
+        );
+    }
+
+    public function testGetUsers()
+    {
+        $client = $this->getAuthenticatedClient('admin', 'admin');
+        $client->request('GET', '/users');
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+        $users = json_decode($client->getResponse()->getContent(), FALSE);
+        $this->assertGreaterThan(
+            0,
+            count($users)
+        );
+        return $users;
+    }
+
+    /**
+     * @depends testGetUsers
+     */
+    public function testGetUser($users)
+    {
+        $user = reset($users);
+        $client = $this->getAuthenticatedClient($user->username, $user->username);
+        $client->request('GET', '/users/' . $user->id);
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+        $data = json_decode($client->getResponse()->getContent(), FALSE);
+        $this->assertEquals(
+            $user->username,
+            $data->username
+        );
+    }
+
+    /**
+     * @depends testGetUsers
+     */
+    public function testGetUserDenied($users)
+    {
+        $user1 = reset($users);
+        $user2 = next($users);
+        if($user2->username === 'admin') {
+            list($user1, $user2) = array($user2, $user1);
+        }
+        $client = $this->getAuthenticatedClient($user2->username, $user2->username);
+        $client->request('GET', '/users/' . $user1->id);
+        $this->assertEquals(
+            Response::HTTP_FORBIDDEN,
+            $client->getResponse()->getStatusCode()
+        );
+    }
+
+    /**
+     * @depends testGetUsers
+     */
+    public function testGetUserMe($users)
+    {
+        $user = reset($users);
+        $client = $this->getAuthenticatedClient($user->username, $user->username);
+        $client->request('GET', '/users/me');
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+        $data = json_decode($client->getResponse()->getContent(), FALSE);
+        $this->assertEquals(
+            $user->username,
+            $data->username
         );
     }
 }

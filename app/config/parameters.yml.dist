@@ -17,3 +17,6 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    # Life of a token sent to reset a password (seconds)
+    resetting_token_ttl: 86400
