@@ -39,7 +39,7 @@ class SecurityTest extends WebTestCase
     public function testGetProfileDenied()
     {
         $client = $this->getAnonymousClient();
-        $client->request('GET', "/profile/show");
+        $client->request('GET', "/profile/");
         $this->assertEquals(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode()
@@ -53,7 +53,7 @@ class SecurityTest extends WebTestCase
     public function testGetProfile()
     {
         $client = $this->getAuthenticatedClient();
-        $client->request('GET', '/profile/show');
+        $client->request('GET', '/profile/');
         $this->assertEquals(
             Response::HTTP_OK,
             $client->getResponse()->getStatusCode()
@@ -63,7 +63,7 @@ class SecurityTest extends WebTestCase
     public function testGetChangePassword()
     {
         $client = $this->getAuthenticatedClient();
-        $client->request('GET', '/change_password');
+        $client->request('GET', '/profile/change-password');
         $this->assertEquals(
             Response::HTTP_OK,
             $client->getResponse()->getStatusCode()
@@ -73,7 +73,7 @@ class SecurityTest extends WebTestCase
     public function testGetRegister()
     {
         $client = $this->getAnonymousClient();
-        $client->request('GET', '/registration/register');
+        $client->request('GET', '/register/');
         $this->assertEquals(
             Response::HTTP_OK,
             $client->getResponse()->getStatusCode()
@@ -146,7 +146,11 @@ class SecurityTest extends WebTestCase
             0,
             count($users)
         );
-        return $users;
+        $return = [];
+        foreach($users as $user) {
+            $return[$user->username] = $user;
+        }
+        return $return;
     }
 
     /**
@@ -154,17 +158,16 @@ class SecurityTest extends WebTestCase
      */
     public function testGetUser($users)
     {
-        $user = reset($users);
-        $client = $this->getAuthenticatedClient($user->username, $user->username);
-        $client->request('GET', '/users/' . $user->id);
+        $client = $this->getAuthenticatedClient($users['admin']->username, $users['admin']->username);
+        $client->request('GET', '/users/' . $users['user']->id);
         $this->assertEquals(
             Response::HTTP_OK,
             $client->getResponse()->getStatusCode()
         );
         $data = json_decode($client->getResponse()->getContent(), FALSE);
         $this->assertEquals(
-            $user->username,
-            $data->username
+            $users['user']->id,
+            $data->id
         );
     }
 
@@ -173,13 +176,8 @@ class SecurityTest extends WebTestCase
      */
     public function testGetUserDenied($users)
     {
-        $user1 = reset($users);
-        $user2 = next($users);
-        if($user2->username === 'admin') {
-            list($user1, $user2) = array($user2, $user1);
-        }
-        $client = $this->getAuthenticatedClient($user2->username, $user2->username);
-        $client->request('GET', '/users/' . $user1->id);
+        $client = $this->getAuthenticatedClient($users['user']->username, $users['user']->username);
+        $client->request('GET', '/users/' . $users['user']->id);
         $this->assertEquals(
             Response::HTTP_FORBIDDEN,
             $client->getResponse()->getStatusCode()
@@ -191,8 +189,7 @@ class SecurityTest extends WebTestCase
      */
     public function testGetUserMe($users)
     {
-        $user = reset($users);
-        $client = $this->getAuthenticatedClient($user->username, $user->username);
+        $client = $this->getAuthenticatedClient($users['user']->username, $users['user']->username);
         $client->request('GET', '/users/me');
         $this->assertEquals(
             Response::HTTP_OK,
@@ -200,8 +197,8 @@ class SecurityTest extends WebTestCase
         );
         $data = json_decode($client->getResponse()->getContent(), FALSE);
         $this->assertEquals(
-            $user->username,
-            $data->username
+            $users['user']->id,
+            $data->id
         );
     }
 }
