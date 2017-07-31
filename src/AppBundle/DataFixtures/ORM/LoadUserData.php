@@ -2,10 +2,10 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Doctrine\UserManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -21,15 +21,15 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
     public function load (ObjectManager $manager)
     {
-        /* @var $userManager UserManager */
-        $userManager = $this->container->get('app.user_manager');
+        /* @var $userManager UserManagerInterface */
+        $userManager = $this->container->get('fos_user.user_manager');
 
         $this->loadUser($userManager, 'admin', 'admin', ['ROLE_ADMIN']);
         $this->loadUser($userManager, 'guru', 'guru', ['ROLE_GURU']);
         $this->loadUser($userManager, 'user', 'user');
     }
 
-    private function loadUser (UserManager $userManager, $username, $password, $roles = [])
+    private function loadUser (UserManagerInterface $userManager, $username, $password, $roles = [])
     {
         $user = $userManager->createUser();
         $user->setUsername($username);

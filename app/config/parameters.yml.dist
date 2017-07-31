@@ -20,3 +20,8 @@ parameters:
 
     # Life of a token sent to reset a password (seconds)
     resetting_token_ttl: 86400
+
+    # Oauth2 credentials for the test app
+    oauth_test_client_id: ~
+    oauth_test_client_secret: ~
+    oauth_test_redirect_uri: ~

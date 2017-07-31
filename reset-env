@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export SYMFONY_ENV=$1
-bin/console cache:clear
+bin/console cache:clear --no-warmup
 bin/console doctrine:database:drop --force
 bin/console doctrine:database:create
 bin/console doctrine:schema:update --force
