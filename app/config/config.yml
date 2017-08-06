@@ -28,7 +28,7 @@ framework:
         handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     fragments: ~
-    http_method_override: true
+    http_method_override: false
     assets: ~
     php_errors:
         log: true
@@ -37,6 +37,11 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
 
 # Doctrine Configuration
 doctrine:

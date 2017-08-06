@@ -65,7 +65,7 @@ class ClientCreateCommand extends ContainerAwareCommand
         $questions = array();
 
         if (count($input->getOption('redirect-uri')) === 0) {
-            $question = new Question('Please choose a redirect URI:');
+            $question = new Question('Please choose a redirect URI: ');
             $question->setValidator(function ($redirectURI) {
                 if (empty($redirectURI)) {
                     throw new \Exception('Redirect URI can not be empty');
@@ -77,7 +77,7 @@ class ClientCreateCommand extends ContainerAwareCommand
         }
 
         if (count($input->getOption('grant-type')) === 0) {
-            $question = new Question('Please choose a grant type:');
+            $question = new Question('Please choose a grant type: ');
             $question->setValidator(function ($grantType) {
                 if (empty($grantType)) {
                     throw new \Exception('Grant type can not be empty');
@@ -89,7 +89,7 @@ class ClientCreateCommand extends ContainerAwareCommand
         }
 
         if (count($input->getOption('client-name')) === 0) {
-            $question = new Question('Please choose a client name:');
+            $question = new Question('Please choose a client name: ');
             $question->setValidator(function ($clientName) {
                 if (empty($clientName)) {
                     throw new \Exception('Client name can not be empty');
@@ -101,7 +101,7 @@ class ClientCreateCommand extends ContainerAwareCommand
         }
 
         if (count($input->getOption('client-email')) === 0) {
-            $question = new Question('Please choose a client email:');
+            $question = new Question('Please choose a client email: ');
             $question->setValidator(function ($clientEmail) {
                 if (empty($clientEmail)) {
                     throw new \Exception('Client email can not be empty');

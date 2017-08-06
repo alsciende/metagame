@@ -64,7 +64,7 @@ class ClientDeleteCommand extends ContainerAwareCommand
                 );
             }
 
-            $question = new ChoiceQuestion('Please choose a client to delete:', $choices);
+            $question = new ChoiceQuestion('Please choose a client to delete: ', $choices);
             $question->setNormalizer(function ($value) {
                return substr($value, 0, strpos($value, ' '));
             });

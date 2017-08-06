@@ -19,7 +19,7 @@ class UserController extends Controller
     /**
      * Get all Users
      *
-     * @Route("/users")
+     * @Route("/api/users")
      * @Method("GET")
      */
     public function listAction (Request $request)
@@ -38,7 +38,7 @@ class UserController extends Controller
     /**
      * Get myself
      *
-     * @Route("/users/me")
+     * @Route("/api/users/me")
      * @Method("GET")
      */
     public function getMeAction (Request $request)
@@ -57,7 +57,7 @@ class UserController extends Controller
     /**
      * Get a User
      *
-     * @Route("/users/{id}")
+     * @Route("/api/users/{id}")
      * @Method("GET")
      */
     public function getAction (Request $request, string $id)
