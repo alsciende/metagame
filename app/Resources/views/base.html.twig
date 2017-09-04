@@ -4,11 +4,42 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Metagame</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-{% block body %}
-{% endblock %}
+<div class="container">
+    <div class="header clearfix">
+        <nav class="hidden-xs">
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a href="{{ path('index') }}">Home</a></li>
+                {% if app.user %}
+                    <li role="presentation"><a href="{{ path('account') }}">Account</a></li>
+                    <li role="presentation"><a href="{{ path('fos_user_security_logout') }}">Log out</a></li>
+                {% else %}
+                    <li role="presentation"><a href="{{ path('fos_user_security_login') }}">Sign in</a></li>
+                    <li role="presentation"><a href="{{ path('fos_user_registration_register') }}">Sign up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <h3 class="text-muted">Metagame</h3>
+    </div>
+
+    {% block body %}
+    {% endblock %}
+
+    <footer class="footer">
+        <p>&copy; 2017 Metagame by Alsciende.</p>
+    </footer>
+
+</div> <!-- /container -->
+
 </body>
 </html>
