@@ -4,19 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Metagame</title>
-    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="header clearfix">
+<div class="container-fluid">
+    <div class="header clearfix small">
         <nav class="hidden-xs">
             <ul class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a href="{{ path('index') }}">Home</a></li>
@@ -29,14 +25,16 @@
                 {% endif %}
             </ul>
         </nav>
-        <h3 class="text-muted">Metagame</h3>
+        <h4 class="text-muted">MetaGame</h4>
     </div>
+</div>
+<div class="container">
 
     {% block body %}
     {% endblock %}
 
     <footer class="footer">
-        <p>&copy; 2017 Metagame by Alsciende.</p>
+        <p>&copy; 2017 MetaGame by Alsciende</p>
     </footer>
 
 </div> <!-- /container -->
