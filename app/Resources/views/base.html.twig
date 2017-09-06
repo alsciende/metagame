@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Metagame</title>
+    <title>MetaGame</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -15,7 +15,7 @@
     <div class="header clearfix small">
         <nav class="hidden-xs">
             <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a href="{{ path('index') }}">Home</a></li>
+                <li role="presentation"><a href="{{ path('index') }}">Home</a></li>
                 {% if app.user %}
                     <li role="presentation"><a href="{{ path('account') }}">Account</a></li>
                     <li role="presentation"><a href="{{ path('fos_user_security_logout') }}">Log out</a></li>
@@ -33,7 +33,7 @@
     {% block body %}
     {% endblock %}
 
-    <footer class="footer">
+    <footer class="footer hidden-xs">
         <p>&copy; 2017 MetaGame by Alsciende</p>
     </footer>
 
