@@ -21,7 +21,23 @@ parameters:
     # Life of a token sent to reset a password (seconds)
     resetting_token_ttl: 86400
 
-    # Oauth2 credentials for the test app
+    # Oauth2 credentials for the test app (redirect /sandbox/callback)
     oauth_test_client_id: ~
     oauth_test_client_secret: ~
-    oauth_test_redirect_uri: ~
+
+    # Oauth2 servers
+    oauth_known_servers:
+      - netrunnerdb
+      - thronesdb
+
+    # Oauth2 credentials for NetrunnerDB (redirect /auth/callback/netrunnerdb)
+    oauth_netrunnerdb_url: https://netrunnerdb.com
+    oauth_netrunnerdb_profile_api: /api/2.0/private/account/info
+    oauth_netrunnerdb_client_id: ~
+    oauth_netrunnerdb_client_secret: ~
+
+    # Oauth2 credentials for ThronesDB (redirect /auth/callback/thronesdb)
+    oauth_thronesdb_url: https://thronesdb.com
+    oauth_thronesdb_profile_api: /api/oauth2/user
+    oauth_thronesdb_client_id: ~
+    oauth_thronesdb_client_secret: ~
