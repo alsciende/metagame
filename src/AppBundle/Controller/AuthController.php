@@ -91,7 +91,6 @@ class AuthController extends Controller
 
         // process the response
         $response = json_decode($res->getBody(), true);
-
         $data = reset($response['data']);
 
         /** @var AuthUser $authUser */
@@ -102,8 +101,7 @@ class AuthController extends Controller
         $this->get('doctrine.orm.entity_manager')->flush();
         $request->getSession()->set('auth_user', $authUser->getId());
 
-        dump($authUser);
-        die;
+        return new RedirectResponse($this->generateUrl('fos_user_registration_register'));
     }
 
     private function isServerValid (string $server)

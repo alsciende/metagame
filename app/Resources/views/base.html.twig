@@ -17,7 +17,7 @@
             <ul class="nav nav-pills pull-right">
                 <li role="presentation"><a href="{{ path('index') }}">Home</a></li>
                 {% if app.user %}
-                    <li role="presentation"><a href="{{ path('account') }}">Account</a></li>
+                    <li role="presentation"><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
                     <li role="presentation"><a href="{{ path('fos_user_security_logout') }}">Log out</a></li>
                 {% else %}
                     <li role="presentation"><a href="{{ path('fos_user_security_login') }}">Sign in</a></li>
@@ -33,7 +33,7 @@
     {% block body %}
     {% endblock %}
 
-    <footer class="footer hidden-xs">
+    <footer class="footer hidden-xs small">
         <p>&copy; 2017 MetaGame by Alsciende</p>
     </footer>
 

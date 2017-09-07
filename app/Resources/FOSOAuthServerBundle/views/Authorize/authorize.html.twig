@@ -1,0 +1,8 @@
+{% extends "FOSOAuthServerBundle::layout.html.twig" %}
+
+{% block fos_oauth_server_content %}
+    <p>
+        The application <i>{{ client.name }}</i> would like to connect to your account.
+    </p>
+{% include "FOSOAuthServerBundle:Authorize:authorize_content.html.twig" %}
+{% endblock fos_oauth_server_content %}

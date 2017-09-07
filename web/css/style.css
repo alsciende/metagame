@@ -13,6 +13,11 @@ body {
     text-shadow: 0 0 2px black;
 }
 
+.fos-user {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-bottom: 30px;
+}
+
 .header {
     font-size: small;
 }
@@ -24,4 +29,28 @@ body {
 .footer {
     margin-top: 50px;
     text-align: center;
+}
+
+.btn-auth {
+    background-repeat: no-repeat;
+    background-size: 10%;
+    background-position: 10px center;
+    padding-left: 50px;
+    color: black;
+    text-shadow: none;
+    margin-bottom: 20px;
+}
+
+.btn-auth:hover {
+    color: #888888;
+}
+
+.btn-thronesdb {
+    background-color: rgb(241, 196, 15);
+    background-image: url('https://thronesdb.com/icon-192.png');
+}
+
+.btn-netrunnerdb {
+    background-color: rgb(211, 211, 211);
+    background-image: url('https://netrunnerdb.com/icon.png');
 }

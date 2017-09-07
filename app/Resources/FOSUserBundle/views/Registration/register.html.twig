@@ -1,7 +1,18 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
 {% block fos_user_content %}
-    <h3>Welcome!</h3>
-
+    {% if app.session.get('auth_user') is null %}
+        <h3>Welcome!</h3>
+        <a href="{{ path('oauth2_initiate', {server:'netrunnerdb'}) }}" class="btn btn-auth btn-netrunnerdb">
+            Sign up with NetrunnerDB
+        </a>
+        <a href="{{ path('oauth2_initiate', {server:'thronesdb'}) }}" class="btn btn-auth btn-thronesdb">
+            Sign up with ThronesDB
+        </a>
+        <p>or sign up below:</p>
+    {% else %}
+        <h3>Almost done!</h3>
+        <p>Please verify your information and choose a password:</p>
+    {% endif %}
     {% include "@FOSUser/Registration/register_content.html.twig" %}
 {% endblock fos_user_content %}

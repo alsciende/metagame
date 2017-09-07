@@ -160,4 +160,26 @@ class AuthUser
 
         return $this;
     }
+
+    /**
+     * @var User|null
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="authUsers")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    protected $user;
+
+    public function setUser(User $user = null): self
+    {
+        $this->user = $user;
+        if ($user instanceof User) {
+            $user->addAuthUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 }

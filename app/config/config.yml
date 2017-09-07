@@ -95,6 +95,10 @@ fos_user:
         sender_name: "%mailer_user%"
 
 jms_serializer:
+    visitors:
+        json:
+            # JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            options: 448
     metadata:
         auto_detection: true
         directories:

@@ -32,3 +32,9 @@ services:
             - name: kernel.event_listener
               event: fos_oauth_server.post_authorization_process
               method: onPostAuthorizationProcess
+
+    app.registration_listener:
+            class: AppBundle\EventListener\RegistrationListener
+            autowire: true
+            tags:
+                - { name: kernel.event_subscriber }

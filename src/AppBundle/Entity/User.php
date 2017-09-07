@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -25,10 +26,74 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var Collection|AuthUser[]
+     * @ORM\OneToMany(targetEntity="AuthUser", mappedBy="user")
+     */
+    private $authUsers;
+    /**
      * @var Collection|Authorization[]
      * @ORM\OneToMany(targetEntity="Authorization", mappedBy="user")
      */
     private $authorizations;
+
+    public function __construct ()
+    {
+        $this->authUsers = new ArrayCollection();
+        parent::__construct();
+    }
+
+    /** @return Collection|AuthUser[] */
+    public function getAuthUsers (): Collection
+    {
+        return $this->authUsers;
+    }
+
+    /** @param Collection|AuthUser[] $authUsers */
+    public function setAuthUsers (Collection $authUsers): self
+    {
+        $this->clearAuthUsers();
+        foreach ($authUsers as $authUser) {
+            $this->addAuthUser($authUser);
+        }
+
+        return $this;
+    }
+
+    public function clearAuthUsers (): self
+    {
+        foreach ($this->getAuthUsers() as $authUser) {
+            $this->removeAuthUser($authUser);
+        }
+        $this->authUsers->clear();
+
+        return $this;
+    }
+
+    public function removeAuthUser (AuthUser $authUser): self
+    {
+        if ($this->authUsers->contains($authUser)) {
+            $this->authUsers->removeElement($authUser);
+            $authUser->setUser(null);
+        }
+
+        return $this;
+    }
+
+    public function addAuthUser (AuthUser $authUser): self
+    {
+        if ($this->authUsers->contains($authUser) === false) {
+            $this->authUsers->add($authUser);
+            $authUser->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /** @return Collection|Authorization[] */
+    public function getAuthorizations (): Collection
+    {
+        return $this->authorizations;
+    }
 
     /** @param Collection|Authorization[] $authorizations */
     public function setAuthorizations (Collection $authorizations): self
@@ -41,20 +106,14 @@ class User extends BaseUser
         return $this;
     }
 
-    public function addAuthorization (Authorization $authorization): self
+    public function clearAuthorizations (): self
     {
-        if ($this->authorizations->contains($authorization) === false) {
-            $this->authorizations->add($authorization);
-            $authorization->setUser($this);
+        foreach ($this->getAuthorizations() as $authorization) {
+            $this->removeAuthorization($authorization);
         }
+        $this->authorizations->clear();
 
         return $this;
-    }
-
-    /** @return Collection|Authorization[] */
-    public function getAuthorizations (): Collection
-    {
-        return $this->authorizations;
     }
 
     public function removeAuthorization (Authorization $authorization): self
@@ -67,12 +126,12 @@ class User extends BaseUser
         return $this;
     }
 
-    public function clearAuthorizations (): self
+    public function addAuthorization (Authorization $authorization): self
     {
-        foreach ($this->getAuthorizations() as $authorization) {
-            $this->removeAuthorization($authorization);
+        if ($this->authorizations->contains($authorization) === false) {
+            $this->authorizations->add($authorization);
+            $authorization->setUser($this);
         }
-        $this->authorizations->clear();
 
         return $this;
     }
