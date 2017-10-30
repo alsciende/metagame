@@ -2,6 +2,14 @@
 
 {% block fos_user_content %}
     <h3>Profile</h3>
-{% include "@FOSUser/Profile/show_content.html.twig" %}
-    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary" >Edit your profile</a>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% include "@FOSUser/Profile/show_content.html.twig" %}
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">Edit your profile</a>
+    <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary">Change your password</a>
 {% endblock fos_user_content %}

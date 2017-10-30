@@ -1,5 +1,13 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
 {% block fos_user_content %}
-{% include "@FOSUser/Profile/edit_content.html.twig" %}
+    <h3>Edit your profile</h3>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% include "@FOSUser/Profile/edit_content.html.twig" %}
 {% endblock fos_user_content %}

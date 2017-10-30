@@ -1,5 +1,13 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
 {% block fos_user_content %}
-{% include "@FOSUser/Resetting/request_content.html.twig" %}
+    <h3 class="hidden-xs">Reset your password</h3>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% include "@FOSUser/Resetting/request_content.html.twig" %}
 {% endblock fos_user_content %}
