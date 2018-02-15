@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Description of AuthUser
+ * User used by the API Sandbox
  *
  * @ORM\Entity()
  * @ORM\Table(name="auth_users")
