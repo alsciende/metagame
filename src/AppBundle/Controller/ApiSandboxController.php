@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use GuzzleHttp\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -23,7 +22,6 @@ class ApiSandboxController extends Controller
      * Display the API explorer
      * @Route("/explorer", name="api_sandbox_explorer")
      * @Method("GET")
-     * @Template
      */
     public function explorerAction (Request $request)
     {
@@ -36,9 +34,9 @@ class ApiSandboxController extends Controller
 
         $oauthTokenResponse = $session->get('api_sandbox_token_response');
 
-        return [
+        return $this->render('ApiSandbox/explorer.html.twig', [
             'token' => $oauthTokenResponse
-        ];
+        ]);
     }
 
     /**
@@ -46,14 +44,13 @@ class ApiSandboxController extends Controller
      * @param Request $request
      * @Route("/initiate", name="api_sandbox_initiate")
      * @Method("GET")
-     * @Template
      */
     public function initiateAction ()
     {
-        return [
+        return $this->render('ApiSandbox/initiate.html.twig', [
             'client_id' => $this->getParameter('oauth_test_client_id'),
             'redirect_uri' => $this->getParameter('oauth_test_redirect_uri')
-        ];
+        ]);
     }
 
     /**
