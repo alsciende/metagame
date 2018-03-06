@@ -8,7 +8,7 @@ FOS\UserBundle\Model\User:
             expose: true
             type: string
         password:
-            expose: true
+            expose: false
             type: string
         email:
             expose: true

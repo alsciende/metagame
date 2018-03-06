@@ -1,0 +1,13 @@
+AppBundle\Entity\AccessToken:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: false
+        client:
+            expose: false
+        token:
+            expose: true
+        expiresAt:
+            expose: true
+        user:
+            expose: true
