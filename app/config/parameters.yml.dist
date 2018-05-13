@@ -15,6 +15,10 @@ parameters:
     mailer_user: ~
     mailer_password: ~
 
+    # Email sender
+    email_sender_address: ~
+    email_sender_name: ~
+
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
